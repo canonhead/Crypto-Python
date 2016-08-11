@@ -2,18 +2,6 @@
 # Online compiler: http://ideone.com/
 # https://repl.it/languages/python3
 
- 
-	
-	
-def scramble(text, key):
-	m = len(key)
-	text = [text[i:i+m] for i in range(0, len(text), m)]
-	o = 0
-	while o < len(text):
-		text[o] = text[o][::-1]
-		o += 1
-	text = ''.join(text)
-
 def invmodp(a, p):
 	for d in range(1, p):
 	        r = (d * a) % p
@@ -33,6 +21,7 @@ def encrypt(text, key, message):
 		z = chr(z)
 		message.append(z)
 		n += 1
+	messageStr = ''.join(message)
 	
 def decrypt(text, key, message):
 	n = 0
@@ -60,11 +49,26 @@ if len(key) < 8:
 
 message = []
 if mode == "e":
-	scramble(text, key)
+	#scramble
+	m = len(key)
+	text = [text[i:i+m] for i in range(0, len(text), m)]
+	o = 0
+	while o < len(text):
+		text[o] = text[o][::-1]
+		o += 1
+	text = ''.join(text)
 	encrypt(text, key, message)
+	messageStr = ''.join(message)
 elif mode == "d":
 	decrypt(text, key, message)
-	scramble(text, key)
+	messageStr = ''.join(message)
+	#scramble
+	m = len(key)
+	messageStr = [messageStr[i:i+m] for i in range(0, len(messageStr), m)]
+	o = 0
+	while o < len(messageStr):
+		messageStr[o] = messageStr[o][::-1]
+		o += 1
+	messageStr = ''.join(messageStr)
 
-messageStr = ''.join(message)
 print(messageStr)
