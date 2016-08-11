@@ -1,0 +1,75 @@
+import math
+
+def encryptMessage(key, message):
+	ciphertext = [''] * key
+	for col in range(key):
+		pointer = col
+		
+		while pointer < len(message):
+			ciphertext[col] += message[pointer]
+			pointer += key
+	return ''.join(ciphertext)
+	
+def decryptMessage(key, message):
+	numOfColumns = math.ceil(len(message) / key)
+	numOfRows = key
+	numOfShadedBoxes = (numOfColumns * numOfRows) - len(message)
+	plaintext = [''] * numOfColumns
+	col = 0
+	row = 0
+	for symbol in message:
+		plaintext[col] += symbol
+		col += 1 # point to next column
+		if (col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadedBoxes):
+				col = 0
+				row += 1
+	return ''.join(plaintext)pyp
+
+def encrypt(text, key, message):
+	n = 0
+	while n < len(text):
+		x = text[n]
+		x = ord(x)
+		y = key[n%len(key)]
+		y = ord(y)
+		z = y*(x+y)
+		z = bin(z)
+		message.append(z)
+		n += 1
+	
+def decrypt(text, key, message):
+	n = 0
+	text = text.split("0b")
+	while n+1 < len(text):
+		z = text[n+1]
+		z = int(z, 2)
+		y = key[n%len(key)]
+		y = ord(y)
+		x = int((z/y)-y)
+		x = chr(x)
+		message.append(x)
+		n += 1
+
+mode = str(input("Enter mode: "))
+mode = mode[0].lower()
+
+key = ""
+text = str(input("Enter text: "))
+if len(key) < 8:
+	key = str(input("Enter key (min. length = 8): "))
+
+message = []
+if mode == "e":
+	myMessage = text
+	myKey = len(key)
+	ciphertext = encryptMessage(myKey, myMessage)
+	encrypt(text, key, message)
+	messageStr = ''.join(message)
+elif mode == "d":
+	decrypt(text, key, message)
+	messageStr = ''.join(message)
+	myMessage = messageStr
+ 	myKey = len(key)
+	plaintext = decryptMessage(myKey, myMessage)
+
+print(messageStr)
